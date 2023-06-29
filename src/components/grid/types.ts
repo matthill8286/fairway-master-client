@@ -18,6 +18,10 @@ type GridContainerProps = {
 
 type GridItemProps = {
   span?: number;
+  alignItems?: string;
+  justifyItems?: string;
+  alignContent?: string;
+  justifyContent?: string;
   order?: number;
   offset?: number;
   area?: string;

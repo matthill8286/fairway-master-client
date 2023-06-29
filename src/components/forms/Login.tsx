@@ -1,4 +1,6 @@
 import { FC, useState } from "react";
+import GridContainer from "../grid/GridContainer";
+import GridItem from "../grid/GridItem";
 
 interface LoginFormProps {
   authenticationService: any;
@@ -19,7 +21,7 @@ const Login: FC<LoginFormProps> = ({ authenticationService }) => {
   };
 
   return (
-    <div>
+    <GridItem span={12} alignItems="center" justifyContent="center">
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <input
@@ -36,7 +38,7 @@ const Login: FC<LoginFormProps> = ({ authenticationService }) => {
         />
         <button type="submit">Login</button>
       </form>
-    </div>
+    </GridItem>
   );
 };
 

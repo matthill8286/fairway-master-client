@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { register } from "../../api/authApi";
 import { useUser } from "../user/UserContext";
 import advancedLocalStorage from "../../utils/local.storage";
+import { GridItem } from "../grid";
 
 function RegisterForm() {
   const [username, setUsername] = useState("");
@@ -24,26 +25,28 @@ function RegisterForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Username:
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </label>
-      <label>
-        Password:
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </label>
-      <button type="submit">Register</button>
-      {error && <p>{error}</p>}
-    </form>
+    <GridItem span={12} alignItems="center" justifyContent="center">
+      <form onSubmit={handleSubmit}>
+        <label>
+          Username:
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </label>
+        <label>
+          Password:
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </label>
+        <button type="submit">Register</button>
+        {error && <p>{error}</p>}
+      </form>
+    </GridItem>
   );
 }
 

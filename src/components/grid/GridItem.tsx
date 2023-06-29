@@ -5,6 +5,7 @@ import { GridItemProps } from "./types";
 const GridItem = styled.div<GridItemProps>`
   grid-column: span ${(props) => props.span || "12"};
   order: ${(props) => props.order || 0};
+  display: grid;
 
   ${(props) =>
     props.offset &&
@@ -16,6 +17,30 @@ const GridItem = styled.div<GridItemProps>`
     props.area &&
     css`
       grid-area: ${props.area};
+    `}
+
+    ${(props) =>
+    props.alignItems &&
+    css`
+      align-items: ${props.alignItems};
+    `}
+
+  ${(props) =>
+    props.justifyItems &&
+    css`
+      justify-items: ${props.justifyItems};
+    `}
+
+  ${(props) =>
+    props.alignContent &&
+    css`
+      align-content: ${props.alignContent};
+    `}
+
+  ${(props) =>
+    props.justifyContent &&
+    css`
+      justify-content: ${props.justifyContent};
     `}
 
   ${(props) =>

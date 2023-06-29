@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { forgotPassword } from "../../api/authApi";
 import { useLocation } from "react-router-dom";
+import { GridItem } from "../grid";
 
 function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
@@ -19,18 +20,20 @@ function ForgotPasswordForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Email:
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </label>
-      <button type="submit">Send reset link</button>
-      {error && <p>{error}</p>}
-    </form>
+    <GridItem span={12} alignItems="center" justifyContent="center">
+      <form onSubmit={handleSubmit}>
+        <label>
+          Email:
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </label>
+        <button type="submit">Send reset link</button>
+        {error && <p>{error}</p>}
+      </form>
+    </GridItem>
   );
 }
 

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
+import { GridContainer, GridItem } from "../grid";
 
 function Layout() {
   let [historyIndex, setHistoryIndex] = React.useState(
@@ -20,20 +21,29 @@ function Layout() {
   }, [location]);
 
   return (
-    <div>
-      <ul>
+    <GridContainer
+      columnSizes="repeat(12, 1fr)"
+      gap="1em"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <GridItem span={12} alignItems="center" justifyContent="center">
         <li>
           <Link to="/">Home</Link>
         </li>
         <li>
           <Link to="/login">Login</Link>
+        </li>
+        <li>
           <Link to="/register">Register</Link>
+        </li>
+        <li>
           <Link to="/forgot-password">Forgot Password</Link>
         </li>
-      </ul>
+      </GridItem>
 
       <Outlet />
-    </div>
+    </GridContainer>
   );
 }
 
