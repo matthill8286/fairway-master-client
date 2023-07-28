@@ -1,3 +1,6 @@
+Defines how to use the Grid System
+
+```jsx
 import GridContainer from "./GridContainer";
 import GridItem from "./GridItem";
 import MediaQuery from "./MediaQuery";
@@ -47,3 +50,4 @@ const App = () => {
 };
 
 export default App;
+```
