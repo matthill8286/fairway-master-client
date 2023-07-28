@@ -1,19 +1,16 @@
-import React, { useState } from "react";
-import { register } from "../../api/authApi";
-import { useUser } from "../user/UserContext";
-import advancedLocalStorage from "../../utils/local.storage";
-import { GridItem } from "../grid";
+// import { register } from "../../api/authApi";
+// import advancedLocalStorage from "../../utils/local.storage";
 import React, { useState, SetStateAction } from "react";
-
+import { GridItem } from "../grid";
 import { StyledGrid } from "../structural/Grid";
 import { Input } from "../structural/Input";
 import { Button } from "../structural/Button";
 import { Form } from "../structural/Form";
+import { LoginFormProps } from "./Login";
 
 // import { register } from "../../api/authApi";
 import { useUser } from "../user/UserContext";
 // import advancedLocalStorage from "../../utils/local.storage";
-import { LoginFormProps } from "./Login";
 
 function RegisterForm({ authenticationService }: LoginFormProps) {
   const [username, setUsername] = useState("");

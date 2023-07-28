@@ -1,4 +1,5 @@
 import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+import { LocalApolloClient } from "./UserRepository";
 
 const CREATE_SCORECARD = gql`
   mutation CreateScorecard {
@@ -27,9 +28,9 @@ const ADD_SCORE_TO_SCORECARD = gql`
 `;
 
 export class ScorecardRepository {
-  client: ApolloClient<InMemoryCache>;
+  client: LocalApolloClient;
 
-  constructor(client: ApolloClient<InMemoryCache>) {
+  constructor(client: LocalApolloClient) {
     this.client = client;
   }
 

@@ -10,7 +10,7 @@ export class AuthenticationService {
     this.advancedLocalStorage = advancedLocalStorage
   }
 
-  async login(username: any, password: any) {
+  async login(username: string, password: string) {
     const user = await this.userRepository.getUserByUsername(username);
 
     if (!user || user.password !== password) {
@@ -20,7 +20,7 @@ export class AuthenticationService {
     localStorage.setItem("userId", user.id);
   }
 
-  async registerAndCreateUser(username: any, password: any) {
+  async registerAndCreateUser(username: string, password: string) {
     const response = await this.userRepository.createUser(username, password);
 
     if (!response || response.data.createUser) {

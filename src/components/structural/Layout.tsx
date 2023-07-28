@@ -1,6 +1,7 @@
 import React from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import styled from "styled-components"
+import { GridContainer, GridItem } from "../grid";
 
 const StyledOutlet = styled('main')`
   margin: 0 auto;
@@ -32,9 +33,9 @@ function Layout() {
       alignItems="center"
       justifyContent="center"
     >
-      <GridItem span={12} alignItems="center" justifyContent="center">
+      <GridItem span={12} alignItems="center" justifyContent="center" tag="ul">
         <li>
-          <Link to="/">Home</Link>
+          <Link to="/protected">Home</Link>
         </li>
         <li>
           <Link to="/login">Login</Link>
@@ -51,7 +52,7 @@ function Layout() {
         <Outlet />
       </StyledOutlet>
 
-    </div>
+    </GridContainer>
   );
 }
 

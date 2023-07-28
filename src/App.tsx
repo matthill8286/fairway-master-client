@@ -6,13 +6,11 @@ import { UserProvider, useUser } from "./components/user/UserContext";
 import { ApiProvider } from "./api/UsersApiContext";
 
 // Components
-// import LoginForm from "./components/forms/LoginForm";
 import RegisterForm from "./components/forms/RegisterForm";
 import ForgotPasswordForm from "./components/forms/ForgotPasswordForm";
 import Dashboard from "./components/dashboard/Dashboard";
 import Layout from "./components/structural/Layout";
 
-// import Login from "./components/forms/Login";
 // import ScorecardForm from "./components/ScorecardForm";
 // import ScorecardList from "./components/ScorecardList";
 

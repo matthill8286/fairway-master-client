@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+import { ApolloClient, InMemoryCache, NormalizedCacheObject, gql } from "@apollo/client";
 
 const CREATE_USER = gql`
   mutation CreateUser($username: String!, $password: String!) {
@@ -51,10 +51,12 @@ const DELETE_USER = gql`
   }
 `;
 
-export class UserRepository {
-  client: ApolloClient<InMemoryCache>;
+export type LocalApolloClient = ApolloClient<NormalizedCacheObject>
 
-  constructor(client: ApolloClient<InMemoryCache>) {
+export class UserRepository {
+  client: LocalApolloClient;
+
+  constructor(client: LocalApolloClient) {
     this.client = client;
   }
 
