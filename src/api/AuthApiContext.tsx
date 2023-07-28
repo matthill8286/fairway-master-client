@@ -4,7 +4,7 @@ import * as authApi from "./authApi";
 type AuthApiServiceType = typeof authApi;
 
 const AuthApiContext = React.createContext<AuthApiServiceType | undefined>(
-  undefined
+  undefined,
 );
 
 export const ApiProvider: React.FC<{ children: NonNullable<ReactNode> }> = ({

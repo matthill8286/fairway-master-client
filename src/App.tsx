@@ -25,16 +25,17 @@ import { AuthenticationService } from "./services/AuthenticationService";
 import Login from "./components/forms/Login";
 import ScorecardList from "./components/scorecards/ScorecardList";
 import ScorecardForm from "./components/scorecards/ScorecardForm";
+import advancedLocalStorage from "./utils/local.storage";
 
 // Configure your Apollo Client with the appropriate endpoint
 const client = new ApolloClient({
-  uri: "http://your-graphql-server.com/graphql",
+  uri: "http://localhost:3001/graphql",
   cache: new InMemoryCache(),
 });
 
 const userRepository = new UserRepository(client);
 const scorecardRepository = new ScorecardRepository(client);
-const authenticationService = new AuthenticationService(userRepository);
+const authenticationService = new AuthenticationService(userRepository, advancedLocalStorage);
 
 function App() {
   return (
@@ -49,8 +50,8 @@ function App() {
                   <Login authenticationService={authenticationService} />
                 }
               />
-              <Route path="/register" element={<RegisterForm />} />
-              <Route path="/forgot-password" element={<ForgotPasswordForm />} />
+              <Route path="/register" element={<RegisterForm authenticationService={authenticationService} />} />
+              <Route path="/forgot-password" element={<ForgotPasswordForm authenticationService={authenticationService} />} />
             </Route>
             <Route
               path="/protected"

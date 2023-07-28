@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { forgotPassword } from "../../api/authApi";
 import { useLocation } from "react-router-dom";
+import { LoginFormProps } from "./Login";
 
-function ForgotPasswordForm() {
+function ForgotPasswordForm({ authenticationService }: LoginFormProps) {
   const [email, setEmail] = useState("");
   const [error, setError] = useState(null);
   const location = useLocation();
+
+  console.log("service", { authenticationService });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
