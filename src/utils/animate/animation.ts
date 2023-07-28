@@ -22,17 +22,17 @@ const setStyles = (el: HTMLElement): ((styles: Styles) => void) => {
 };
 
 const animateElement = (
-  selector: string
+  selector: string,
 ): ((config: AnimationConfig) => Observable<Styles>) => {
   const setElStyles = setStyles(
-    document.querySelector<HTMLElement>(selector)!
+    document.querySelector<HTMLElement>(selector)!,
   ) as any;
 
   return (config: AnimationConfig) => {
     return merge(
       of(0),
       fromEvent(window, "scroll").pipe(throttleTime(10)),
-      fromEvent(window, "resize").pipe(throttleTime(10))
+      fromEvent(window, "resize").pipe(throttleTime(10)),
     ).pipe(
       map(() => {
         const scrollPos = window.pageYOffset;
@@ -61,17 +61,17 @@ const animateElement = (
         return newStyles;
       }),
       startWith(config.start),
-      switchMap(setElStyles)
+      switchMap(setElStyles),
     );
   };
 };
 
 export const useAnimation = (
   selector: string,
-  config: AnimationConfig
+  config: AnimationConfig,
 ): void => {
   const [isReducedMotion, setIsReducedMotion] = useState<boolean>(
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
 
   useEffect(() => {
@@ -85,3 +85,11 @@ export const useAnimation = (
     return () => subscription.unsubscribe();
   }, [selector, config, isReducedMotion, setIsReducedMotion]);
 };
+
+/**
+ * @description RXJS Animation library
+ * @memberof useAnimation
+
+  const animateTheCunt = useAnimation('cuntHead', { 'key': { start: '', end: '' } })
+
+*/

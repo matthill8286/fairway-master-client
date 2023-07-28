@@ -1,6 +1,17 @@
-import { FC, useState } from "react";
+import { FC, SetStateAction, useState } from "react";
+import { styled } from "styled-components";
 
-interface LoginFormProps {
+import { StyledGrid } from "../structural/Grid";
+import { Input } from "../structural/Input";
+import { Button } from "../structural/Button";
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+`
+
+export interface LoginFormProps {
   authenticationService: any;
 }
 
@@ -19,24 +30,24 @@ const Login: FC<LoginFormProps> = ({ authenticationService }) => {
   };
 
   return (
-    <div>
+    <StyledGrid>
       <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <input
+      <Form onSubmit={handleLogin}>
+        <Input
           type="text"
           placeholder="Username"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e: { target: { value: SetStateAction<string>; }; }) => setUsername(e.target.value)}
         />
-        <input
+        <Input
           type="password"
           placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e: { target: { value: SetStateAction<string>; }; }) => setPassword(e.target.value)}
         />
-        <button type="submit">Login</button>
-      </form>
-    </div>
+        <Button type="submit">Login</Button>
+      </Form>
+    </StyledGrid>
   );
 };
 

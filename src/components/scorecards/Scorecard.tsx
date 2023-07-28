@@ -12,7 +12,7 @@ const GolfScorecard = () => {
   const date = "June 27, 2023";
   const finalScore = scorecardData.reduce(
     (total, data) => total + data.score,
-    0
+    0,
   );
 
   return (

@@ -13,7 +13,7 @@ const ScorecardForm: FC<ScorecardFormProps> = ({ scorecardRepository }) => {
       const scorecard = await scorecardRepository.createScorecard();
       await scorecardRepository.addScoreToScorecard(
         scorecard.id,
-        parseInt(value, 10)
+        parseInt(value, 10),
       );
       // Perform necessary actions upon successful scorecard creation and score addition
     } catch (error) {

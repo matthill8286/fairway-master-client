@@ -30,7 +30,7 @@ export function reducerFactory<T>(resource: string) {
           ...state,
           isLoading: false,
           data: state.data.map((item: any) =>
-            item.id === action.payload.id ? action.payload : item
+            item.id === action.payload.id ? action.payload : item,
           ),
           error: null,
         };

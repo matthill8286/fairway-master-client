@@ -1,6 +1,6 @@
 // AdvancedLocalStorage.ts
 
-class AdvancedLocalStorage {
+export class AdvancedLocalStorage {
   // set item with try catch block to handle JSON.stringify errors
   public setItem<T>(key: string, value: T): void {
     try {

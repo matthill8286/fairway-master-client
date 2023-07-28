@@ -1,10 +1,13 @@
 import { UserRepository } from "../repositories/UserRepository";
+import { AdvancedLocalStorage } from "../utils/local.storage";
 
 export class AuthenticationService {
   userRepository;
+  advancedLocalStorage;
 
-  constructor(userRepository: UserRepository) {
+  constructor(userRepository: UserRepository, advancedLocalStorage: AdvancedLocalStorage) {
     this.userRepository = userRepository;
+    this.advancedLocalStorage = advancedLocalStorage
   }
 
   async login(username: any, password: any) {
@@ -15,6 +18,16 @@ export class AuthenticationService {
     }
 
     localStorage.setItem("userId", user.id);
+  }
+
+  async registerAndCreateUser(username: any, password: any) {
+    const response = await this.userRepository.createUser(username, password);
+
+    if (!response || response.data.createUser) {
+      throw new Error(`Failed to create user ${username}`);
+    }
+
+    return response.data.createUser
   }
 
   logout() {

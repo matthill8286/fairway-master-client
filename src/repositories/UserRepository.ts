@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 
 const CREATE_USER = gql`
   mutation CreateUser($username: String!, $password: String!) {
@@ -52,13 +52,13 @@ const DELETE_USER = gql`
 `;
 
 export class UserRepository {
-  client;
+  client: ApolloClient<InMemoryCache>;
 
-  constructor(client: any) {
+  constructor(client: ApolloClient<InMemoryCache>) {
     this.client = client;
   }
 
-  async createUser(username: any, password: any) {
+  async createUser(username: string, password: string) {
     const response = await this.client.mutate({
       mutation: CREATE_USER,
       variables: { username, password },
@@ -76,7 +76,7 @@ export class UserRepository {
     return response.data.user;
   }
 
-  async getUserById(id: any) {
+  async getUserById(id: string) {
     const response = await this.client.query({
       query: GET_USER_BY_ID,
       variables: { id },
@@ -93,7 +93,7 @@ export class UserRepository {
     return response.data.users;
   }
 
-  async updateUser(id: any, username: any, password: any) {
+  async updateUser(id: string, username: string, password: string) {
     const response = await this.client.mutate({
       mutation: UPDATE_USER,
       variables: { id, username, password },
@@ -102,7 +102,7 @@ export class UserRepository {
     return response.data.updateUser;
   }
 
-  async deleteUser(id: any) {
+  async deleteUser(id: string) {
     const response = await this.client.mutate({
       mutation: DELETE_USER,
       variables: { id },

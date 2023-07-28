@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 
 const CREATE_SCORECARD = gql`
   mutation CreateScorecard {
@@ -27,9 +27,9 @@ const ADD_SCORE_TO_SCORECARD = gql`
 `;
 
 export class ScorecardRepository {
-  client;
+  client: ApolloClient<InMemoryCache>;
 
-  constructor(client: any) {
+  constructor(client: ApolloClient<InMemoryCache>) {
     this.client = client;
   }
 
@@ -41,7 +41,7 @@ export class ScorecardRepository {
     return response.data.createScorecard;
   }
 
-  async getScorecardById(id: any) {
+  async getScorecardById(id: string) {
     const response = await this.client.query({
       query: GET_SCORECARD_BY_ID,
       variables: { id },
@@ -50,7 +50,7 @@ export class ScorecardRepository {
     return response.data.scorecard;
   }
 
-  async addScoreToScorecard(scorecardId: any, value: any) {
+  async addScoreToScorecard(scorecardId: string, value: string | string[]) {
     const response = await this.client.mutate({
       mutation: ADD_SCORE_TO_SCORECARD,
       variables: { scorecardId, value },
