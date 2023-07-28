@@ -33,19 +33,21 @@ function Layout() {
       alignItems="center"
       justifyContent="center"
     >
-      <GridItem span={12} alignItems="center" justifyContent="center" tag="ul">
-        <li>
-          <Link to="/protected">Home</Link>
-        </li>
-        <li>
-          <Link to="/login">Login</Link>
-        </li>
-        <li>
-          <Link to="/register">Register</Link>
-        </li>
-        <li>
-          <Link to="/forgot-password">Forgot Password</Link>
-        </li>
+      <GridItem span={12} alignItems="center" justifyContent="center">
+        <ul>
+          <li>
+            <Link to="/protected">Home</Link>
+          </li>
+          <li>
+            <Link to="/login">Login</Link>
+          </li>
+          <li>
+            <Link to="/register">Register</Link>
+          </li>
+          <li>
+            <Link to="/forgot-password">Forgot Password</Link>
+          </li>
+        </ul>
       </GridItem>
 
       <StyledOutlet>
