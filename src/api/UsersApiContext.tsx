@@ -4,7 +4,7 @@ import * as usersApi from "./usersApi";
 type UsersApiServiceType = typeof usersApi;
 
 const UsersApiContext = React.createContext<UsersApiServiceType | undefined>(
-  undefined
+  undefined,
 );
 
 export const ApiProvider: React.FC<{ children: NonNullable<ReactNode> }> = ({

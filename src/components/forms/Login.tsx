@@ -1,8 +1,18 @@
-import { FC, useState } from "react";
-import GridContainer from "../grid/GridContainer";
-import GridItem from "../grid/GridItem";
+import { FC, SetStateAction, useState } from "react";
+import { styled } from "styled-components";
 
-interface LoginFormProps {
+import GridItem from "../grid/GridItem";
+import { StyledGrid } from "../structural/Grid";
+import { Input } from "../structural/Input";
+import { Button } from "../structural/Button";
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+`
+
+export interface LoginFormProps {
   authenticationService: any;
 }
 
@@ -22,22 +32,24 @@ const Login: FC<LoginFormProps> = ({ authenticationService }) => {
 
   return (
     <GridItem span={12} alignItems="center" justifyContent="center">
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Login</button>
-      </form>
+      <StyledGrid>
+        <h2>Login</h2>
+        <Form onSubmit={handleLogin}>
+          <Input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e: { target: { value: SetStateAction<string>; }; }) => setUsername(e.target.value)}
+          />
+          <Input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e: { target: { value: SetStateAction<string>; }; }) => setPassword(e.target.value)}
+          />
+          <Button type="submit">Login</Button>
+        </Form>
+      </StyledGrid>
     </GridItem>
   );
 };
