@@ -55,7 +55,7 @@ const animateElement = (
           newStyles[key] =
             (start as number) +
             ((end as number) - (start as number)) *
-              (config.parallax ? elFraction : scrollFraction);
+            (config.parallax ? elFraction : scrollFraction);
         }
 
         return newStyles;
@@ -90,6 +90,6 @@ export const useAnimation = (
  * @description RXJS Animation library
  * @memberof useAnimation
 
-  const animateTheCunt = useAnimation('cuntHead', { 'key': { start: '', end: '' } })
+  const animateTheThing = useAnimation('selector', { 'key': { start: '', end: '' } })
 
 */

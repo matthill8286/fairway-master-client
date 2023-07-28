@@ -1,14 +1,16 @@
+// import { register } from "../../api/authApi";
+// import advancedLocalStorage from "../../utils/local.storage";
 import React, { useState, SetStateAction } from "react";
-
+import { GridItem } from "../grid";
 import { StyledGrid } from "../structural/Grid";
 import { Input } from "../structural/Input";
 import { Button } from "../structural/Button";
 import { Form } from "../structural/Form";
+import { LoginFormProps } from "./Login";
 
 // import { register } from "../../api/authApi";
 import { useUser } from "../user/UserContext";
 // import advancedLocalStorage from "../../utils/local.storage";
-import { LoginFormProps } from "./Login";
 
 function RegisterForm({ authenticationService }: LoginFormProps) {
   const [username, setUsername] = useState("");
@@ -32,29 +34,31 @@ function RegisterForm({ authenticationService }: LoginFormProps) {
   };
 
   return (
-    <StyledGrid>
-      <h2>Register</h2>
-      <Form onSubmit={handleSubmit}>
-        <label>
-          Username:
-          <Input
-            type="text"
-            value={username}
-            onChange={(e: { target: { value: SetStateAction<string>; }; }) => setUsername(e.target.value)}
-          />
-        </label>
-        <label>
-          Password:
-          <Input
-            type="password"
-            value={password}
-            onChange={(e: { target: { value: SetStateAction<string>; }; }) => setPassword(e.target.value)}
-          />
-        </label>
-        <Button type="submit">Register</Button>
-        {error && <p>{error}</p>}
-      </Form>
-    </StyledGrid>
+    <GridItem span={12} alignItems="center" justifyContent="center">
+      <StyledGrid>
+        <h2>Register</h2>
+        <Form onSubmit={handleSubmit}>
+          <label>
+            Username:
+            <Input
+              type="text"
+              value={username}
+              onChange={(e: { target: { value: SetStateAction<string>; }; }) => setUsername(e.target.value)}
+            />
+          </label>
+          <label>
+            Password:
+            <Input
+              type="password"
+              value={password}
+              onChange={(e: { target: { value: SetStateAction<string>; }; }) => setPassword(e.target.value)}
+            />
+          </label>
+          <Button type="submit">Register</Button>
+          {error && <p>{error}</p>}
+        </Form>
+      </StyledGrid>
+    </GridItem>
   );
 }
 

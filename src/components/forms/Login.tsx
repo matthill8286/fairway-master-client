@@ -1,6 +1,7 @@
 import { FC, SetStateAction, useState } from "react";
 import { styled } from "styled-components";
 
+import GridItem from "../grid/GridItem";
 import { StyledGrid } from "../structural/Grid";
 import { Input } from "../structural/Input";
 import { Button } from "../structural/Button";
@@ -30,24 +31,26 @@ const Login: FC<LoginFormProps> = ({ authenticationService }) => {
   };
 
   return (
-    <StyledGrid>
-      <h2>Login</h2>
-      <Form onSubmit={handleLogin}>
-        <Input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e: { target: { value: SetStateAction<string>; }; }) => setUsername(e.target.value)}
-        />
-        <Input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e: { target: { value: SetStateAction<string>; }; }) => setPassword(e.target.value)}
-        />
-        <Button type="submit">Login</Button>
-      </Form>
-    </StyledGrid>
+    <GridItem span={12} alignItems="center" justifyContent="center">
+      <StyledGrid>
+        <h2>Login</h2>
+        <Form onSubmit={handleLogin}>
+          <Input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e: { target: { value: SetStateAction<string>; }; }) => setUsername(e.target.value)}
+          />
+          <Input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e: { target: { value: SetStateAction<string>; }; }) => setPassword(e.target.value)}
+          />
+          <Button type="submit">Login</Button>
+        </Form>
+      </StyledGrid>
+    </GridItem>
   );
 };
 
