@@ -2,6 +2,7 @@ import React from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import styled from "styled-components"
 import { GridContainer, GridItem } from "../grid";
+import Header from "./Header/Header";
 
 const StyledOutlet = styled('main')`
   margin: 0 auto;
@@ -34,20 +35,7 @@ function Layout() {
       justifyContent="center"
     >
       <GridItem span={12} alignItems="center" justifyContent="center">
-        <ul>
-          <li>
-            <Link to="/protected">Home</Link>
-          </li>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
-          <li>
-            <Link to="/register">Register</Link>
-          </li>
-          <li>
-            <Link to="/forgot-password">Forgot Password</Link>
-          </li>
-        </ul>
+        <Header />
       </GridItem>
 
       <StyledOutlet>

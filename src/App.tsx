@@ -3,27 +3,30 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 // Context API
 import { UserProvider, useUser } from "./components/user/UserContext";
-import { ApiProvider } from "./api/UsersApiContext";
+import { ApiProvider } from "./contexts/UsersApiContext";
 
 // Components
 import RegisterForm from "./components/forms/RegisterForm";
 import ForgotPasswordForm from "./components/forms/ForgotPasswordForm";
+import Login from "./components/forms/Login";
+import ScorecardList from "./components/scorecards/ScorecardList";
+import ScorecardForm from "./components/scorecards/ScorecardForm";
 import Dashboard from "./components/dashboard/Dashboard";
 import Layout from "./components/structural/Layout";
-
-// import ScorecardForm from "./components/ScorecardForm";
-// import ScorecardList from "./components/ScorecardList";
+import BillDetails from "./features/bills/BillDetails";
+import GroupMembers from "./features/groups/GroupMembers";
 
 // Repositories
 import { UserRepository } from "./repositories/UserRepository";
 import { ScorecardRepository } from "./repositories/ScorecardRepository";
+import { BillRepository } from "./repositories/BillRepository";
 
 // Services
 import { AuthenticationService } from "./services/AuthenticationService";
-import Login from "./components/forms/Login";
-import ScorecardList from "./components/scorecards/ScorecardList";
-import ScorecardForm from "./components/scorecards/ScorecardForm";
+
+// Utils
 import advancedLocalStorage from "./utils/local.storage";
+
 
 // Configure your Apollo Client with the appropriate endpoint
 const client = new ApolloClient({
@@ -31,9 +34,10 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-const userRepository = new UserRepository(client);
-const scorecardRepository = new ScorecardRepository(client);
-const authenticationService = new AuthenticationService(userRepository, advancedLocalStorage);
+export const userRepository = new UserRepository(client);
+export const scorecardRepository = new ScorecardRepository(client);
+export const billsRepository = new BillRepository(client);
+export const authenticationService = new AuthenticationService(userRepository, advancedLocalStorage);
 
 function App() {
   return (
@@ -52,7 +56,23 @@ function App() {
               <Route path="/forgot-password" element={<ForgotPasswordForm authenticationService={authenticationService} />} />
             </Route>
             <Route
-              path="/protected"
+              path="/bills"
+              element={
+                <RequireAuth>
+                  <BillDetails billsRepository={billsRepository} />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/groups"
+              element={
+                <RequireAuth>
+                  <GroupMembers />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/dashboard"
               element={
                 <RequireAuth>
                   <Dashboard />

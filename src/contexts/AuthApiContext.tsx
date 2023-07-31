@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import * as authApi from "./authApi";
+import * as authApi from "../api/authApi";
 
 type AuthApiServiceType = typeof authApi;
 

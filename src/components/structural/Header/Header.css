@@ -1,0 +1,26 @@
+.links-container {
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateX(-100%);
+  /* Start the links offscreen */
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.links-container.visible {
+  opacity: 1;
+  transform: translateX(0);
+  /* Move the links onscreen */
+}
+
+.links-container.left {
+  /* Slide-in from left styles */
+}
+
+.links-container.right {
+  /* Slide-in from left styles */
+}
+
+.links-container a {
+  /* Add your link styles here */
+}

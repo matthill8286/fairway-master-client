@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache, NormalizedCacheObject, gql } from "@apollo/client";
+import { ApolloClient, NormalizedCacheObject, gql } from "@apollo/client";
 
 const CREATE_USER = gql`
   mutation CreateUser($username: String!, $password: String!) {

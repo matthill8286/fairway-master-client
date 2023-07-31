@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { LocalApolloClient } from "./UserRepository";
 
 const CREATE_SCORECARD = gql`
