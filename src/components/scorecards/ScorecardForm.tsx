@@ -1,20 +1,20 @@
-import { FC, useState } from "react";
+import { useState } from "react";
 
 interface ScorecardFormProps {
   scorecardRepository: any;
 }
 
-const ScorecardForm: FC<ScorecardFormProps> = ({ scorecardRepository }) => {
+const ScorecardForm = () => {
   const [value, setValue] = useState("");
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     try {
-      const scorecard = await scorecardRepository.createScorecard();
-      await scorecardRepository.addScoreToScorecard(
-        scorecard.id,
-        parseInt(value, 10),
-      );
+      // const scorecard = await scorecardRepository.createScorecard();
+      // await scorecardRepository.addScoreToScorecard(
+      //   scorecard.id,
+      //   parseInt(value, 10),
+      // );
       // Perform necessary actions upon successful scorecard creation and score addition
     } catch (error) {
       console.error("Failed to create scorecard or add score:", error);

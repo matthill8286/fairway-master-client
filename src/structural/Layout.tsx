@@ -1,10 +1,10 @@
 import React from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
-import styled from "styled-components"
-import { GridContainer, GridItem } from "../grid";
+import { Outlet, useLocation } from "react-router-dom";
+import styled from "styled-components";
 import Header from "./Header/Header";
+import { GridContainer, GridItem } from "./Grid";
 
-const StyledOutlet = styled('main')`
+const StyledOutlet = styled("main")`
   margin: 0 auto;
   padding: 0;
   display: flex;
@@ -27,6 +27,8 @@ function Layout() {
     document.title = location.pathname;
   }, [location]);
 
+  console.log(historyIndex);
+
   return (
     <GridContainer
       columnSizes="repeat(12, 1fr)"
@@ -41,7 +43,6 @@ function Layout() {
       <StyledOutlet>
         <Outlet />
       </StyledOutlet>
-
     </GridContainer>
   );
 }

@@ -12,7 +12,7 @@ const MediaQuery: React.FC<MediaQueryProps> = ({ query, children }) => {
   return (
     <>
       {React.Children.map(children, (child) =>
-        React.cloneElement(child, { mediaQuery })
+        React.cloneElement(child, { mediaQuery }),
       )}
     </>
   );

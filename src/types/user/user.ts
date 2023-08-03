@@ -4,5 +4,11 @@ export interface User {
   name?: string;
   password?: string;
   email?: string;
-  contribution?: number
+  contribution?: number;
 }
+
+export type UserContribution = {
+  id: string;
+  name: string;
+  contribution: number;
+};

@@ -1,4 +1,4 @@
-import { Container, GolferName, FinalScore, Table, Header } from "./Scorecard.styled";
+import { Container, GolferName, FinalScore, Table, Header, Date } from "../../components/scorecards/Scorecard.styled";
 
 const GolfScorecard = () => {
   const scorecardData = [

@@ -1,40 +1,109 @@
-import { UserRepository } from "../repositories/UserRepository";
-import { AdvancedLocalStorage } from "../utils/local.storage";
+// AuthService.ts
+import AuthSubject from "./AuthSubject";
 
-export class AuthenticationService {
-  userRepository;
-  advancedLocalStorage;
+class AuthService {
+  private baseUrl: string;
+  private authSubject: AuthSubject;
 
-  constructor(userRepository: UserRepository, advancedLocalStorage: AdvancedLocalStorage) {
-    this.userRepository = userRepository;
-    this.advancedLocalStorage = advancedLocalStorage
+  constructor(authSubject: AuthSubject) {
+    // Replace the base URL with your backend API URL
+    this.baseUrl = "http://localhost:3001";
+    this.authSubject = authSubject;
   }
 
-  async login(username: string, password: string) {
-    const user = await this.userRepository.getUserByUsername(username);
+  async login(
+    email: string,
+    password: string,
+  ): Promise<{ accessToken: string }> {
+    try {
+      const response = await fetch(`${this.baseUrl}/v1/auth/sign-in`, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (!user || user.password !== password) {
-      throw new Error("Invalid username or password");
+      console.log(response);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+
+      const data: { accessToken: string } = await response.json();
+
+      this.authSubject.setAccessToken(data.accessToken);
+
+      return { accessToken: data.accessToken };
+    } catch (error: any) {
+      throw new Error("Failed to log in. " + error.message);
+    }
+  }
+
+  async register(
+    email: string,
+    password: string,
+  ): Promise<{ accessToken: string }> {
+    try {
+      const response = await fetch(`${this.baseUrl}/v1/auth/sign-up`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+
+      const data: { accessToken: string } = await response.json();
+
+      this.authSubject.setAccessToken(data.accessToken);
+
+      return { accessToken: data.accessToken };
+    } catch (error: any) {
+      throw new Error("Failed to register. " + error.message);
+    }
+  }
+
+  async forgotPassword(username: string): Promise<void> {
+    try {
+      const response = await fetch(`${this.baseUrl}/forgot-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message);
+      }
+
+      await response.json();
+    } catch (error: any) {
+      throw new Error("Failed to log in. " + error.message);
+    }
+  }
+
+  async fetchWithToken(url: string, options?: RequestInit): Promise<Response> {
+    const accessToken = this.authSubject.getAccessToken();
+    if (!accessToken) {
+      throw new Error("Access token not available.");
     }
 
-    localStorage.setItem("userId", user.id);
-  }
+    const headers = {
+      ...options?.headers,
+      Authorization: `Bearer ${accessToken}`,
+    };
 
-  async registerAndCreateUser(username: string, password: string) {
-    const response = await this.userRepository.createUser(username, password);
-
-    if (!response || response.data.createUser) {
-      throw new Error(`Failed to create user ${username}`);
-    }
-
-    return response.data.createUser
-  }
-
-  logout() {
-    localStorage.removeItem("userId");
-  }
-
-  getCurrentUserId() {
-    return localStorage.getItem("userId");
+    return fetch(url, { ...options, headers });
   }
 }
+
+export default AuthService;

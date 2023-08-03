@@ -72,7 +72,7 @@ const GridItem = styled.div<GridItemProps>`
         };
       `
         }
-      `
+      `,
     )}
 `;
 

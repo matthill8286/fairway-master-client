@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
-import { UserList } from "../user/UserList";
-import { UserForm } from "../user/UserForm";
-import { getAllUsers } from "../../api/usersApi";
 
-export function Dashboard() {
+function Dashboard() {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,8 +12,8 @@ export function Dashboard() {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const fetchedUsers = await getAllUsers();
-      setUsers(fetchedUsers as any);
+      // const fetchedUsers = await getAllUsers();
+      setUsers([]);
     } catch (error) {
       console.error("Failed to fetch users:", error);
     } finally {
@@ -26,7 +23,7 @@ export function Dashboard() {
 
   return (
     <div>
-      {loading ? (
+      {/* {loading ? (
         <p>Loading...</p>
       ) : (
         <>
@@ -37,7 +34,7 @@ export function Dashboard() {
           />
           <UserForm user={selectedUser} onUserChange={fetchUsers} />
         </>
-      )}
+      )} */}
     </div>
   );
 }
