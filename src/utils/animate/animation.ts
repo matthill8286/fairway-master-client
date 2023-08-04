@@ -35,7 +35,7 @@ const animateElement = (
       fromEvent(window, "resize").pipe(throttleTime(10)),
     ).pipe(
       map(() => {
-        const scrollPos = window.pageYOffset;
+        const scrollPos = window.scrollY;
         const { height, top } = document
           .querySelector<HTMLElement>(selector)!
           .getBoundingClientRect();

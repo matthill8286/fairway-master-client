@@ -1,100 +1,103 @@
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-
-// Context API
-import { UserProvider, useUser } from "./components/user/UserContext";
-import { ApiProvider } from "./api/UsersApiContext";
 
 // Components
 import RegisterForm from "./components/forms/RegisterForm";
 import ForgotPasswordForm from "./components/forms/ForgotPasswordForm";
-import Dashboard from "./components/dashboard/Dashboard";
-import Layout from "./components/structural/Layout";
-
-// import ScorecardForm from "./components/ScorecardForm";
-// import ScorecardList from "./components/ScorecardList";
-
-// Repositories
-import { UserRepository } from "./repositories/UserRepository";
-import { ScorecardRepository } from "./repositories/ScorecardRepository";
-
-// Services
-import { AuthenticationService } from "./services/AuthenticationService";
-import Login from "./components/forms/Login";
+import Login from "./components/forms/LoginForm";
 import ScorecardList from "./components/scorecards/ScorecardList";
 import ScorecardForm from "./components/scorecards/ScorecardForm";
-import advancedLocalStorage from "./utils/local.storage";
+import Dashboard from "./features/dashboard/Dashboard";
+import Layout from "./structural/Layout";
+import { AuthProvider, useAuthContext } from "./contexts/AuthContext";
+import { User } from "./models/User";
+import AuthSubject from "./services/AuthSubject";
 
-// Configure your Apollo Client with the appropriate endpoint
-const client = new ApolloClient({
-  uri: "http://localhost:3001/graphql",
-  cache: new InMemoryCache(),
-});
-
-const userRepository = new UserRepository(client);
-const scorecardRepository = new ScorecardRepository(client);
-const authenticationService = new AuthenticationService(userRepository, advancedLocalStorage);
-
+// Utils
 function App() {
+  // Create the AuthManager instance
+  const authSubject = new AuthSubject();
+
+  console.log(authSubject);
+
   return (
-    <ApolloProvider client={client}>
-      <ApiProvider>
-        <UserProvider>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route
-                path="/login"
-                element={
-                  <Login authenticationService={authenticationService} />
-                }
-              />
-              <Route path="/register" element={<RegisterForm authenticationService={authenticationService} />} />
-              <Route path="/forgot-password" element={<ForgotPasswordForm authenticationService={authenticationService} />} />
-            </Route>
-            <Route
-              path="/protected"
-              element={
-                <RequireAuth>
-                  <Dashboard />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="/scorecards"
-              element={
-                <RequireAuth>
-                  <ScorecardList scorecardRepository={scorecardRepository} />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="/add-scorecard"
-              element={
-                <RequireAuth>
-                  <ScorecardForm scorecardRepository={scorecardRepository} />
-                </RequireAuth>
-              }
-            />
-          </Routes>
-        </UserProvider>
-      </ApiProvider>
-    </ApolloProvider>
+    <AuthProvider<User>
+      credentialMapper={(user) => ({
+        email: user.email,
+        password: user.password,
+      })}
+      userDataMapper={(user) => ({
+        email: user.email,
+        password: user.password,
+      })}
+    >
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          {/* Authentication */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<RegisterForm />} />
+          <Route path="/forgot-password" element={<ForgotPasswordForm />} />
+
+          {/* Features */}
+          <Route
+            path="/bills"
+            element={
+              <ProtectedRoute>
+                <p>Hello</p>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/groups"
+            element={
+              <ProtectedRoute>
+                <p>Hello</p>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/scorecards"
+            element={
+              <ProtectedRoute>
+                <ScorecardList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/add-scorecard"
+            element={
+              <ProtectedRoute>
+                <ScorecardForm />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
+        <Route path="*" element={<NoMatch />} />
+      </Routes>
+    </AuthProvider>
   );
 }
 
-function RequireAuth({ children }: { children: JSX.Element }) {
-  const { user } = useUser();
-  let location = useLocation();
+const ProtectedRoute = ({ children }: any) => {
+  const { isAuthenticated } = useAuthContext();
+  const location = useLocation();
 
-  if (!user) {
-    // Redirect them to the /login page, but save the current location they were
-    // trying to go to when they were redirected. This allows us to send them
-    // along to that page after they login, which is a nicer user experience
-    // than dropping them off on the home page.
-    return <Navigate to="/login" state={{ from: location }} replace />;
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
   }
 
   return children;
-}
+};
+
+const NoMatch = () => {
+  return <p>There's nothing here: 404!</p>;
+};
 
 export default App;

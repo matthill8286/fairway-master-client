@@ -1,45 +1,76 @@
-import React, { useState } from "react";
-import { login } from "../../api/authApi";
-import { useUser } from "../user/UserContext";
+import { SetStateAction, useEffect, useMemo, useState } from "react";
+import { styled } from "styled-components";
 
-function LoginForm() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  const { setUser } = useUser();
+import { GridItem } from "../../structural/Grid";
+import { Input } from "../../structural/Input";
+import { Button } from "../../structural/Button";
 
-  const handleSubmit = async (e: React.FormEvent) => {
+import { LoggerObserver } from "../../services/LoggerObserver";
+import AuthSubject from "../../services/AuthSubject";
+import { useAuthContext } from "../../contexts/AuthContext";
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+`;
+
+function Login() {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+
+  const { login } = useAuthContext();
+
+  // Create the AuthManager instance
+  const authSubject = useMemo(() => new AuthSubject(), []);
+
+  useEffect(() => {
+    const loggerObserver = new LoggerObserver();
+
+    // Register the observer
+    authSubject.addObserver(loggerObserver);
+
+    // Clean up: Unregister the observer when the component is unmounted
+    return () => {
+      authSubject.removeObserver(loggerObserver);
+    };
+  }, [authSubject]);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const user = await login(username, password);
-      setUser(user);
+      await login({ email, password });
     } catch (error: any) {
-      setError(error?.message);
+      setError(error.message);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Username:
-        <input
+    <GridItem span={12} alignItems="center" justifyContent="center">
+      <h2>Login</h2>
+      <Form onSubmit={handleLogin}>
+        <Input
           type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Email"
+          value={email}
+          onChange={(e: { target: { value: SetStateAction<string> } }) =>
+            setEmail(e.target.value)
+          }
         />
-      </label>
-      <label>
-        Password:
-        <input
+        <Input
           type="password"
+          placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e: { target: { value: SetStateAction<string> } }) =>
+            setPassword(e.target.value)
+          }
         />
-      </label>
-      <button type="submit">Login</button>
-      {error && <p>{error}</p>}
-    </form>
+        {error && <div>Error: {error}</div>}
+        <Button type="submit">Login</Button>
+      </Form>
+    </GridItem>
   );
 }
 
-export default LoginForm;
+export default Login;
