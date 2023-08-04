@@ -70,14 +70,14 @@ class AuthService {
     }
   }
 
-  async forgotPassword(username: string): Promise<void> {
+  async forgotPassword(email: string): Promise<void> {
     try {
       const response = await fetch(`${this.baseUrl}/forgot-password`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username }),
+        body: JSON.stringify({ email }),
       });
 
       if (!response.ok) {

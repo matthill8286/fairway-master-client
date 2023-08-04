@@ -8,87 +8,96 @@ import ScorecardList from "./components/scorecards/ScorecardList";
 import ScorecardForm from "./components/scorecards/ScorecardForm";
 import Dashboard from "./features/dashboard/Dashboard";
 import Layout from "./structural/Layout";
-// import BillDetails from "./features/bills/BillDetails";
-// import GroupMembers from "./features/groups/GroupMembers";
-
-import { AuthProvider } from "./services/AuthManager";
+import { AuthProvider, useAuthContext } from "./contexts/AuthContext";
+import { User } from "./models/User";
 import AuthSubject from "./services/AuthSubject";
-import { DataManagerProvider } from "./services/DatamanagerProvider";
 
 // Utils
 function App() {
   // Create the AuthManager instance
-  // const authSubject = new AuthSubject();
+  const authSubject = new AuthSubject();
+
+  console.log(authSubject);
 
   return (
-    <AuthProvider>
-      {/* <DataManagerProvider authSubject={new AuthSubject()}> */}
+    <AuthProvider<User>
+      credentialMapper={(user) => ({
+        email: user.email,
+        password: user.password,
+      })}
+      userDataMapper={(user) => ({
+        email: user.email,
+        password: user.password,
+      })}
+    >
       <Routes>
         <Route path="/" element={<Layout />}>
+          {/* Authentication */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/forgot-password" element={<ForgotPasswordForm />} />
+
+          {/* Features */}
+          <Route
+            path="/bills"
+            element={
+              <ProtectedRoute>
+                <p>Hello</p>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/groups"
+            element={
+              <ProtectedRoute>
+                <p>Hello</p>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/scorecards"
+            element={
+              <ProtectedRoute>
+                <ScorecardList />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/add-scorecard"
+            element={
+              <ProtectedRoute>
+                <ScorecardForm />
+              </ProtectedRoute>
+            }
+          />
         </Route>
-        <Route
-          path="/bills"
-          element={
-            <RequireAuth>
-              {/* <BillDetails /> */}
-              <p>Hello</p>
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/groups"
-          element={
-            <RequireAuth>
-              {/* <GroupMembers /> */}
-              <p>Hello</p>
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/dashboard"
-          element={
-            <RequireAuth>
-              <Dashboard />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/scorecards"
-          element={
-            <RequireAuth>
-              <ScorecardList />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/add-scorecard"
-          element={
-            <RequireAuth>
-              <ScorecardForm />
-            </RequireAuth>
-          }
-        />
+        <Route path="*" element={<NoMatch />} />
       </Routes>
-      {/* </DataManagerProvider> */}
     </AuthProvider>
   );
 }
 
-function RequireAuth({ children }: { children: JSX.Element }) {
-  let location = useLocation();
+const ProtectedRoute = ({ children }: any) => {
+  const { isAuthenticated } = useAuthContext();
+  const location = useLocation();
 
-  // if (!authManager.getAccessToken) {
-  //   // Redirect them to the /login page, but save the current location they were
-  //   // trying to go to when they were redirected. This allows us to send them
-  //   // along to that page after they login, which is a nicer user experience
-  //   // than dropping them off on the home page.
-  //   return <Navigate to="/login" state={{ from: location }} replace />;
-  // }
+  if (!isAuthenticated) {
+    return <Navigate to="/home" replace state={{ from: location }} />;
+  }
 
   return children;
-}
+};
+
+const NoMatch = () => {
+  return <p>There's nothing here: 404!</p>;
+};
 
 export default App;

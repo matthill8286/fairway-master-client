@@ -1,14 +1,13 @@
-import { SetStateAction, useEffect, useState } from "react";
+import { SetStateAction, useEffect, useMemo, useState } from "react";
 import { styled } from "styled-components";
 
 import { GridItem } from "../../structural/Grid";
 import { Input } from "../../structural/Input";
 import { Button } from "../../structural/Button";
 
-import AuthService from "../../services/AuthenticationService";
 import { LoggerObserver } from "../../services/LoggerObserver";
-import { useAuthContext } from "../../services/AuthManager";
-import { useLocation, useNavigate } from "react-router-dom";
+import AuthSubject from "../../services/AuthSubject";
+import { useAuthContext } from "../../contexts/AuthContext";
 
 const Form = styled.form`
   display: flex;
@@ -16,20 +15,15 @@ const Form = styled.form`
   padding: 10px;
 `;
 
-interface LoginFormProps {
-  authService?: AuthService;
-  setAccessToken?: any;
-}
-
 function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
-  const { authSubject } = useAuthContext();
-  const authService = new AuthService(authSubject);
+  const { login } = useAuthContext();
 
-  const navigate = useNavigate();
+  // Create the AuthManager instance
+  const authSubject = useMemo(() => new AuthSubject(), []);
 
   useEffect(() => {
     const loggerObserver = new LoggerObserver();
@@ -43,15 +37,10 @@ function Login() {
     };
   }, [authSubject]);
 
-  const handleLogin = async () => {
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      const { accessToken } = await authService.login(email, password);
-
-      // Do something after successful login
-      if (accessToken) {
-        navigate("/dashboard");
-        console.log("Logged in successfully!");
-      }
+      await login({ email, password });
     } catch (error: any) {
       setError(error.message);
     }
@@ -60,7 +49,7 @@ function Login() {
   return (
     <GridItem span={12} alignItems="center" justifyContent="center">
       <h2>Login</h2>
-      <Form>
+      <Form onSubmit={handleLogin}>
         <Input
           type="text"
           placeholder="Email"
@@ -78,9 +67,7 @@ function Login() {
           }
         />
         {error && <div>Error: {error}</div>}
-        <Button type="button" onClick={handleLogin}>
-          Login
-        </Button>
+        <Button type="submit">Login</Button>
       </Form>
     </GridItem>
   );

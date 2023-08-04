@@ -3,28 +3,19 @@ import { GridItem } from "../../structural/Grid";
 import { Input } from "../../structural/Input";
 import { Button } from "../../structural/Button";
 import { Form } from "../../structural/Form";
-import { useLocation, useNavigate } from "react-router-dom";
-import AuthService from "../../services/AuthenticationService";
-import { useAuthContext } from "../../services/AuthManager";
 import { LoggerObserver } from "../../services/LoggerObserver";
-
-// New approach
-
-interface RegisterFormProps {
-  authService?: AuthService;
-  setAccessToken?: any;
-}
+import { useAuthContext } from "../../contexts/AuthContext";
+import AuthSubject from "../../services/AuthSubject";
 
 function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
-  const { authSubject } = useAuthContext();
+  const { register } = useAuthContext();
 
-  const authService = new AuthService(authSubject);
-
-  const navigate = useNavigate();
+  // Create the AuthManager instance
+  const authSubject = useMemo(() => new AuthSubject(), []);
 
   useEffect(() => {
     const loggerObserver = new LoggerObserver();
@@ -41,13 +32,7 @@ function RegisterForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { accessToken } = await authService.register(email, password);
-
-       // handle user registration here (e.g., redirect to login)
-      if (accessToken) {
-        navigate("/login");
-      }
-     
+      await register({ email, password });
     } catch (error: any) {
       setError(error.message);
     }

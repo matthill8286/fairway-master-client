@@ -1,9 +1,9 @@
 import { User } from "../../types/user/user";
-import { BillRepository } from "../../repositories/BillRepository";
+// import { BillRepository } from "../../repositories/BillRepository";
 import { Bill } from "../../types/groups/groups";
 
 interface IBillDetails {
-  billsRepository?: BillRepository;
+  // billsRepository?: BillRepository;
   bills?: Bill[];
   bill: Bill;
 }

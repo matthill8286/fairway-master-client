@@ -1,4 +1,4 @@
-import { mediaQueries } from "../../utils/mediaQueries";
+import { mediaQueries } from "./mediaQueries";
 
 type MediaSizes = {
   desktop: number;

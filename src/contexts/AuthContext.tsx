@@ -4,18 +4,22 @@ import {
   AuthRepository,
   createAuthRepository,
 } from "../repositories/AuthRepository";
+import AuthSubject from "../services/AuthSubject";
+import { useNavigate } from "react-router-dom";
 
 interface AuthContextValue<T> {
-  isLoggedIn: boolean;
+  isAuthenticated: boolean;
   login: (credentials: T) => Promise<void>;
-  register: (userData: T) => Promise<void>;
+  register: (userData: T) => void;
+  resetPassword?: (userData: T) => void;
   logout: () => void;
 }
 
 const initialContextValue = {
-  isLoggedIn: false,
+  isAuthenticated: false,
   login: () => Promise.resolve(),
   register: () => Promise.resolve(),
+  resetPassword: () => Promise.resolve(),
   logout: () => {},
 };
 
@@ -31,39 +35,46 @@ export const AuthProvider = <T,>({
   userDataMapper,
 }: {
   children: React.ReactNode;
-  credentialMapper: (credentials: T) => { username: string; password: string };
-  userDataMapper: (userData: T) => { username: string; password: string };
+  credentialMapper: (credentials: T) => { email: string; password: string };
+  userDataMapper: (userData: T) => { email: string; password: string };
 }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const authSubject = new AuthSubject();
+
+  const [isAuthenticated, setAuthentication] = useState(false);
+
   const authRepository: AuthRepository<T> = createAuthRepository<T>(
     credentialMapper,
     userDataMapper,
+    authSubject,
   );
+
+  const navigate = useNavigate();
 
   const login = async (credentials: T) => {
     try {
-      const success = await authRepository.login(credentials);
-      setIsLoggedIn(success);
-    } catch (error) {
+      await authRepository.login(credentials);
+      setAuthentication(true);
+      navigate("/dashboard");
+    } catch (error: any) {
       console.error("Login failed:", error.message);
     }
   };
 
   const register = async (userData: T) => {
     try {
-      const success = await authRepository.register(userData);
-      setIsLoggedIn(success);
-    } catch (error) {
+      await authRepository.register(userData);
+      navigate("/dashboard");
+    } catch (error: any) {
       console.error("Registration failed:", error.message);
     }
   };
 
   const logout = () => {
-    setIsLoggedIn(false);
+    setAuthentication(false);
   };
 
   const contextValue: AuthContextValue<T> = {
-    isLoggedIn,
+    isAuthenticated,
     login,
     register,
     logout,

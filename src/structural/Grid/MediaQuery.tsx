@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { mediaQueries } from "../../utils/mediaQueries";
+import { mediaQueries } from "./mediaQueries";
 
 type MediaQueryProps = {
   query: keyof typeof mediaQueries;

@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { mediaQueries } from "../../utils/mediaQueries";
+import { mediaQueries } from "./mediaQueries";
 import { GridItemProps } from "./types";
 
 const GridItem = styled.div<GridItemProps>`

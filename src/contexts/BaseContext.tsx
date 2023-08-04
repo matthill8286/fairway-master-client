@@ -11,6 +11,8 @@ interface BaseContextValue<T> {
   remove: (id: number) => void;
 }
 
+
+
 const initialContextValue = {
   data: [],
   loading: false,
@@ -72,6 +74,8 @@ export function createBaseContext<T>(repository: BaseRepository<T>) {
           const updatedData = await repository.update(id, updates);
 
           if (updatedData) {
+            // FIXME: investigate generics
+            // @ts-expect-error: investigate generics extension of missing id on type T
             setData(data.map((item) => (item.id === id ? updatedData : item)));
           }
         } catch (err: any) {
@@ -88,6 +92,8 @@ export function createBaseContext<T>(repository: BaseRepository<T>) {
 
           await repository.delete(id);
 
+          // FIXME: investigate generics
+          // @ts-expect-error: investigate generics extension of missing id on type T
           setData(data.filter((item) => item.id !== id));
         } catch (err: any) {
           setError(err);
